@@ -1,0 +1,27 @@
+{
+  "name": "unicode-widget",
+  "version": "0.1.0",
+  "description": "Unicode Widget",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/kyungminlee/unicode-widget",
+  "keywords": [
+    "unicode"
+  ],
+  "author": "Kyungmin Lee",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "clipboard": "^1.6.1",
+    "electron": "^1.6.2",
+    "fuse.js": "^2.6.2",
+    "sqlite3": "^3.1.8"
+  },
+  "files": [
+    "ucd.nounihan.simplified.json"
+  ]
+}

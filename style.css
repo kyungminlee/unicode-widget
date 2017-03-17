@@ -1,0 +1,47 @@
+      * {
+        font-family: 'Noto Sans', sans-serif;
+      }
+      body {
+        background-color: #1E1E1E;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      input#query {
+        width: 100%;
+        background-color: #373737;
+        color: #FFFFFF;
+        border: 0;
+        font-size: large;
+      }
+      #result {
+        padding-top: 1em;
+        padding-bottom: 2em;
+      }
+      #result-table {
+        width: 100%;
+      }
+      #statusbar {
+        background-color: #BBBBBB;
+        width: 100%;
+        position: fixed;
+        bottom: 0%;
+      }
+      .character-cell {
+        font-size: xx-large;
+      }
+      .name-cell {
+        font-size: small;
+      }
+      .result-row {
+        background-color: #373737;
+        color: #CCCCCC;
+      }
+      .result-row:active {
+        cursor: -webkit-grabbing;
+        background-color: #264F78;
+        color: #CCCCCC;
+      }
