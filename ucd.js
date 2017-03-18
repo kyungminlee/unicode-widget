@@ -47,15 +47,23 @@ class UnicodeDatabase {
 }
 
 class CachedUnicodeDatabase {
-  constructor(cacheSize = 1000, maxHits = 50) {
+  constructor(aliases = {}, cacheSize = 1000, maxHits = 50) {
     this.cache = {}
     this.history = []
     this.cacheSize = cacheSize
+    this.aliases = {}
     this.ucd = new UnicodeDatabase(maxHits)
   }
 
+  addAlias(alias, value) {
+    this.aliases[alias] = value
+  }
+
   search(query) {
-    query = query.toLowerCase() //.replace(/[^a-z]+/g, "")
+    const aliasResolved = this.aliases[query]
+    if (aliasResolved) { query = aliasResolved }
+    else { query = query.toUpperCase() } //.replace(/[^a-z]+/g, "")
+
     let result = this.cache[query]
     if (!result) {
       result = this.ucd.search(query)
@@ -70,3 +78,20 @@ class CachedUnicodeDatabase {
   }
 }
 ucd = new CachedUnicodeDatabase()
+
+
+{ // TODO: this has to be done transparently
+  const greekAlphabets = ['alpha', 'beta', 'gamma', 'delta']
+  for (let ga of greekAlphabets) {
+    console.log("caching " + ga)
+
+    const queryLower = 'GREEK SMALL LETTER ' + ga.toUpperCase()
+    ucd.addAlias(ga, queryLower)
+    ucd.search(ga)
+
+    const gaUpper = ga.charAt(0).toUpperCase() + ga.slice(1)
+    const queryUpper = 'GREEK CAPITAL LETTER ' + ga.toUpperCase()
+    ucd.addAlias(gaUpper, queryUpper)
+    ucd.search(gaUpper)
+  }
+}
