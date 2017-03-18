@@ -4,8 +4,10 @@ const Fuse = require('fuse.js')
 const path = require('path')
 
 class UnicodeDatabase {
-  constructor() {
+  constructor(maxHits = 100) {
+    this.maxHits = maxHits
     this.database = []
+    this.lookup = {}
     this.loadDatabase(path.join(__dirname, 'ucd.nounihan.simplified.json'))
   }
 
@@ -17,6 +19,7 @@ class UnicodeDatabase {
     const json = JSON.parse(data)
     for(let item of json) {
       this.database.push({cp: item[0], na: item[1]})
+      this.lookup[item[0]] = item[1]
     }
 
     const options = {
@@ -33,7 +36,37 @@ class UnicodeDatabase {
   }
 
   search(query) {
-    return this.fuse.search(query)
+    let result = this.fuse.search(query)
+    result.splice(this.maxHits)
+    return result
+  }
+
+  lookup(cp) {
+    return this.lookup[cp]
   }
 }
-ucd = new UnicodeDatabase()
+
+class CachedUnicodeDatabase {
+  constructor(cacheSize = 1000, maxHits = 50) {
+    this.cache = {}
+    this.history = []
+    this.cacheSize = cacheSize
+    this.ucd = new UnicodeDatabase(maxHits)
+  }
+
+  search(query) {
+    query = query.toLowerCase() //.replace(/[^a-z]+/g, "")
+    let result = this.cache[query]
+    if (!result) {
+      result = this.ucd.search(query)
+      this.cache[query] = result
+      this.history.push(query)
+      if (this.history.length > this.cacheSize) {
+        let query = this.history.shift()
+        delete this.cache[query]
+      }
+    }
+    return result
+  }
+}
+ucd = new CachedUnicodeDatabase()
