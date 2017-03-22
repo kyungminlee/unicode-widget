@@ -1,4 +1,4 @@
-const http = require('http')
+//const http = require('http')
 const fs = require('fs')
 const Fuse = require('fuse.js')
 const path = require('path')
@@ -7,19 +7,19 @@ class UnicodeDatabase {
   constructor(ucdFilename, maxHits = 100) {
     this.maxHits = maxHits
     this.database = []
-    this.lookup = {}
-    this.loadDatabase(ucdFilename)
+    this.lookupTable = {}
+    this.load(ucdFilename)
   }
 
-  loadDatabase(filename) {
+  load(filename) {
     this.database = []
     const data = fs.readFileSync(filename, 'utf8', (err) => {
         if (err) { throw err }
       })
     const json = JSON.parse(data)
-    for(let item of json) {
+    for(const item of json) {
       this.database.push({cp: item[0], na: item[1]})
-      this.lookup[item[0]] = item[1]
+      this.lookupTable[item[0]] = item[1]
     }
 
     const options = {
@@ -42,7 +42,7 @@ class UnicodeDatabase {
   }
 
   lookup(cp) {
-    return this.lookup[cp]
+    return this.lookupTable[cp]
   }
 }
 
@@ -80,40 +80,52 @@ class CachedUnicodeDatabase {
   search(query) {
     const aliasResolved = this.aliases[query]
     if (aliasResolved) { query = aliasResolved }
-    else { query = query.toUpperCase() } //.replace(/[^a-z]+/g, "")
+    else { query = query.toUpperCase() }
 
-    let result = this.cache[query]
-    if (!result) {
-      result = this.ucd.search(query)
-      this.cache[query] = result
+    let cacheHits = this.cache[query]
+    if (cacheHits) {
+      const result = cacheHits.map((cp) => ({cp: parseInt(cp), na: this.ucd.lookup(cp)}))
+      return result
+    } else {
+      const result = this.ucd.search(query)
+      this.cache[query] = result.keys()
       this.history.push(query)
       if (this.history.length > this.cacheSize) {
         let query = this.history.shift()
         delete this.cache[query]
       }
+      return result
     }
-    return result
+  }
+
+  cacheGreekAlphabet() {
+    const greekAlphabets = [
+      'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta',
+      'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi',
+      'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega',
+    ]
+    for (let ga of greekAlphabets) {
+      console.log("caching " + ga)
+      if (!this.cache[ga]) {
+        const queryUpper = 'GREEK CAPITAL LETTER ' + ga.toUpperCase()
+        this.addAlias(ga, queryUpper)
+        this.search(ga)
+      }
+
+      const gaLower = ga.toLowerCase()
+      if (!this.cache[gaLower]) {
+        const queryLower = 'GREEK SMALL LETTER ' + ga.toUpperCase()
+        this.addAlias(gaLower, queryLower)
+        this.search(gaLower)
+      }
+    }
   }
 }
 
-ucd = new CachedUnicodeDatabase(
+let ucd = new CachedUnicodeDatabase(
   path.join(__dirname, 'ucd.nounihan.simplified.json'),
   path.join(__dirname, 'cache.json')
 )
 
-{ // TODO: this has to be done transparently
-  const greekAlphabets = ['alpha', 'beta', 'gamma', 'delta']
-  for (let ga of greekAlphabets) {
-    console.log("caching " + ga)
-
-    const queryLower = 'GREEK SMALL LETTER ' + ga.toUpperCase()
-    ucd.addAlias(ga, queryLower)
-    ucd.search(ga)
-
-    const gaUpper = ga.charAt(0).toUpperCase() + ga.slice(1)
-    const queryUpper = 'GREEK CAPITAL LETTER ' + ga.toUpperCase()
-    ucd.addAlias(gaUpper, queryUpper)
-    ucd.search(gaUpper)
-  }
-  ucd.dump(path.join(__dirname, 'cache.json'))
-}
+ucd.cacheGreekAlphabet()
+ucd.dump(path.join(__dirname, 'cache.json'))
