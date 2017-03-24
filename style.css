@@ -1,3 +1,8 @@
+@font-face {
+  font-family: sans-serif;
+  src: local('Noto Sans');
+}
+
 * {
   font-family: 'Noto Sans', sans-serif;
 }
@@ -17,10 +22,14 @@ input#query {
   border: 0;
   font-size: large;
 }
+input#query:disabled {
+  color: #666666;
+}
 #result {
   padding-top: 1em;
   padding-bottom: 2em;
   height: 100%;
+  cursor: default;
 }
 #result-table {
   width: 100%;
@@ -30,6 +39,7 @@ input#query {
   width: 100%;
   position: fixed;
   bottom: 0%;
+  left: 0%;
 }
 .character-cell {
   font-size: xx-large;
