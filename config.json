@@ -1,4 +1,5 @@
 {
+  "maxHits": 1000,
   "aliases":{
     "Alpha":"GREEK CAPITAL LETTER ALPHA",
     "alpha":"GREEK SMALL LETTER ALPHA",
