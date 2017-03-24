@@ -18,7 +18,7 @@
   "dependencies": {
     "clipboard": "^1.6.1",
     "electron": "^1.6.2",
-    "fuse.js": "^2.6.2"
+    "fuzzaldrin": "^2.1.0"
   },
   "files": [
     "ucd.nounihan.simplified.json"
