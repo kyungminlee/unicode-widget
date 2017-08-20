@@ -2,7 +2,8 @@
 
 Structure of IPC messages
 
-| ---- | ---- |
+| Field | Value |
+| ----- | ----- |
 | `type` | `status`, `result` |
 | `ready` | `true`, `false` |
 | `message` | message |
