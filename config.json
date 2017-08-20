@@ -1,6 +1,6 @@
 {
   "maxHits": 1000,
-  "aliases":{
+  "aliases": {
     "\\sqrt": "SQUARE ROOT",
     "\\cbrt": "CUBE ROOT",
     "\\female": "FEMALE SIGN",
