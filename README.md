@@ -17,11 +17,7 @@ npm install electron-packager -g
 
 ### Windows
 ```
-electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico \
-                  --prune=true --out=release-builds \
-                  --version-string.CompanyName=Kore \
-                  --version-string.FileDescription=Kore \
-                  --version-string.ProductName="Unicode Widget"
+electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=Kore --version-string.FileDescription=Kore --version-string.ProductName="Unicode Widget"
 ```
 
 ### macOS
