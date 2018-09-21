@@ -1,6 +1,6 @@
 {
   "name": "unicode-widget",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unicode Widget",
   "main": "main.js",
   "scripts": {
@@ -12,13 +12,11 @@
   ],
   "author": "Kyungmin Lee",
   "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^1.4.1"
-  },
+  "devDependencies": {},
   "dependencies": {
-    "clipboard": "^1.6.1",
-    "electron": "^1.6.2",
-    "fuzzaldrin-plus": "^0.4.1"
+    "clipboard": "^2.0.0",
+    "electron": "^3.0.0",
+    "fuzzaldrin-plus": "^0.6.0"
   },
   "files": [
     "ucd.nounihan.simplified.json"
