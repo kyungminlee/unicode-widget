@@ -1,6 +1,6 @@
 {
   "name": "unicode-widget",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Unicode Widget",
   "main": "main.js",
   "scripts": {
@@ -12,7 +12,9 @@
   ],
   "author": "Kyungmin Lee",
   "license": "CC0-1.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "electron": "^3.0.0"
+  },
   "dependencies": {
     "clipboard": "^2.0.0",
     "electron": "^3.0.0",
