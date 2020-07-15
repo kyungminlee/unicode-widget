@@ -4,10 +4,7 @@
   "description": "Unicode Widget",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "postinstall": "electron-builder install-app-deps",
-    "build": "electron-builder --mac --windows --linux",
-    "release": "electron-builder --mac --windows --linux --publish always"
+    "start": "electron ."
   },
   "repository": "https://github.com/kyungminlee/unicode-widget",
   "keywords": [
