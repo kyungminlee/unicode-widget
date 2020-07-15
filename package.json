@@ -13,7 +13,8 @@
   "author": "Kyungmin Lee",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^9.0.0"
+    "electron": "^9.0.0",
+    "electron-builder": "^22.0.0"
   },
   "dependencies": {
     "fuzzaldrin-plus": "^0.6.0"
