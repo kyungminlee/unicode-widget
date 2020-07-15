@@ -13,7 +13,10 @@ function createWindow () {
       height: 600, 
       alwaysOnTop: true, 
       frame: true,
-      icon: path.join(__dirname, 'assets/icons/png/64x64.png')
+      icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
+      webPreferences: {
+          nodeIntegration: true
+      }
   })
 
   mainWindow.loadURL(url.format({
