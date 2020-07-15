@@ -16,7 +16,6 @@
     "electron": "^9.0.0"
   },
   "dependencies": {
-    "clipboard": "^2.0.0",
     "electron": "^9.0.0",
     "fuzzaldrin-plus": "^0.6.0"
   },
