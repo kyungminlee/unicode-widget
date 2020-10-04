@@ -8,12 +8,6 @@ const url = require('url');
 
 let mainWindow;
 
-// function setAlwaysOnTop(value) {
-//   //alert("Hi");
-//   mainWindow.alwaysOnTop = value;
-// }
-
-
 function createWindow () {
   mainWindow = new BrowserWindow({
     width: 400,
