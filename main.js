@@ -43,8 +43,7 @@ function createWindow () {
           checked: true
         },
         {
-          label: 'Exit',
-          click() { app.quit(); }
+          role: "quit"
         }
       ]
     }
