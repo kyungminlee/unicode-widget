@@ -16,3 +16,5 @@ Download the latest version from [Releases](https://github.com/kyungminlee/unico
 There are two ways to search for a unicode character:
 - Type in the latex command of the character starting with a backslash `\`, such as `\alpha`, `\otimes`, or even subscripts and superscripts `\^2`, `\_x`.
 - Type in the name of the character. It is not case sensitive, and it does not have to be exact.
+
+You can click an entry to copy the character to your clipboard.
