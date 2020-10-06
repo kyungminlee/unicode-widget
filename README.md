@@ -1,48 +1,18 @@
-# unicode-widget
+# Unicode Widget
 
-## How to run
-
-```
-npm install
-npm start
-```
-
-## How to build
-
-### Install `electron-packager`
-```
-npm install electron-packager -g
-```
+*Unicode Widget* is a unicode input assistant.
 
 
-### Windows
-```
-electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=Kore --version-string.FileDescription=Kore --version-string.ProductName="Unicode Widget"
-```
+## Installation
 
-### macOS
-```
-electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns \
-                  --prune=true --out=release-builds \
-                  --version-string.CompanyName=Kore \
-                  --version-string.FileDescription=Kore \
-                  --version-string.ProductName="Unicode Widget"
-```
+Download the latest version from [Releases](https://github.com/kyungminlee/unicode-widget/releases).
 
-### Linux
-```
-electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png \
-                  --prune=true --out=release-builds \
-                  --version-string.CompanyName=Kore \
-                  --version-string.FileDescription=Kore \
-                  --version-string.ProductName="Unicode Widget"
-```
+## How to use
+<p>
+    <img src="https://raw.githubusercontent.com/kyungminlee/unicode-widget/master/doc/capture-latex.png" alt="input by LaTeX">
+    <img src="https://raw.githubusercontent.com/kyungminlee/unicode-widget/master/doc/capture-name.png" alt="input by name">
+</p>
 
-## Structure of IPC messages
-
-| Field | Value |
-| ----- | ----- |
-| `type` | `status`, `result` |
-| `ready` | `true`, `false` |
-| `message` | message |
-| `result` | result of search |
+There are two ways to search for a unicode character:
+- Type in the latex command of the character starting with a backslash `\`, such as `\alpha`, `\otimes`, or even subscripts and superscripts `\^2`, `\_x`.
+- Type in the name of the character. It is not case sensitive, and it does not have to be exact.
