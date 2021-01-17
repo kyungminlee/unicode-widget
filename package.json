@@ -31,6 +31,10 @@
       "icon": "assets/mac/icon.icns",
       "target": ["default"],
       "hardenedRuntime": true
+    },
+    "nsis": {
+      "installerIcon": "win\\icon.ico",
+      "createDesktopShortcut": false
     }
   },
   "files": [
