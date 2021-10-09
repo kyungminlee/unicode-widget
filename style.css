@@ -40,6 +40,8 @@ input#query:disabled {
   position: fixed;
   bottom: 0%;
   left: 0%;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 .character-cell {
   font-size: xx-large;
