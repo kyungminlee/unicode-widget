@@ -1,10 +1,13 @@
 @font-face {
-  font-family: sans-serif;
-  src: local('Noto Sans');
+  font-family: 'Unifont';
+  /* font-style: normal; */
+  /* font-weight: 400; */
+  src: url('fonts/unifont-14.0.01.ttf') format('truetype'),
 }
 
 * {
-  font-family: 'Noto Sans', sans-serif;
+  /* font-family: 'Unifont', 'Noto Sans', sans-serif; */
+  font-family: Unifont, sans-serif;
 }
 body {
   background-color: #1E1E1E;

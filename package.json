@@ -3,6 +3,7 @@
   "version": "0.1.10",
   "description": "Unicode Widget",
   "main": "main.js",
+  "type": "commonjs",
   "scripts": {
     "start": "electron ."
   },
@@ -13,7 +14,7 @@
   "author": "Kyungmin Lee",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^9.0.0",
+    "electron": "^16.0.0",
     "electron-builder": "^22.13.1"
   },
   "dependencies": {

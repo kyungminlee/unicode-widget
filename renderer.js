@@ -1,55 +1,35 @@
-const path = require('path');
-const { clipboard } = require('electron');
-const cp = require('child_process');
-
-const ucdWorker = cp.fork(
-    path.join(__dirname, 'lib', 'ucd_worker.js'),
-    {silent: 'true'}
-  );
-
 const ucdController = {
   ready: false,
-  send: (query) => {
-    ucdWorker.send({type: 'search', query: query.trim()});
+  sendQuery: (query) => {
+    window.api.send('query', query);
   },
-  receive: (msg) => {
+  sendToClipboard: (item) => {
+    window.api.send('clipboard', item);
+  },
+  receiveStatus: (data) => {
     const queryElement = document.getElementById('query');
     const statusbarElement = document.getElementById('statusbar');
-    const { type } = msg;
-    switch(type) {
-      case 'status': {
-        viewController.clear();
-        if (msg.ready) {
-          ucdController.ready = true;
-          queryElement.removeAttribute('disabled');
-          statusbarElement.innerHTML = msg.message;
-        } else {
-          ucdController.ready = false;
-          viewController.setBusy();
-          queryElement.setAttribute('disabled', 'disabled');
-          statusbarElement.innerHTML = msg.message;
-        }
-      }
-      break;
-      case 'result': {
-        ucdController.ready = true;
-        queryElement.removeAttribute('disabled');
-        const {result} = msg;
-        viewController.update(result);
-      }
-      break;
-      default:
+    const {ready, message} = data;
+    if (ready) {
+      ucdController.ready = true;
+      queryElement.removeAttribute('disabled');
+      statusbarElement.innerHTML = message;
+    } else {
+      ucdController.ready = false;
+      viewController.setBusy();
+      queryElement.setAttribute('disabled', 'disabled');
+      statusbarElement.innerHTML = message;
     }
   },
-}
-
-ucdWorker.stdout && ucdWorker.stdout.on('data', (buf) => {
-  console.log(String(buf));
-});
-ucdWorker.stderr && ucdWorker.stderr.on('data', (buf) => {
-  console.log(String(buf));
-});
-ucdWorker.on('message', ucdController.receive);
+  receiveSearchResult: (data) => {
+    const queryElement = document.getElementById('query');
+    const statusbarElement = document.getElementById('statusbar');
+    const {result} = data;
+    ucdController.ready = true;
+    queryElement.removeAttribute('disabled');
+    viewController.update(result);
+  },
+};
 
 const viewController = {
   clear: () => {
@@ -78,10 +58,8 @@ const viewController = {
     cell2.setAttribute('class', 'name-cell');
     cell1.innerHTML = ch;
     cell2.innerHTML = na;
-    row.onclick = () => { 
-      clipboard.writeText(ch);
-      const statusbarElement = document.getElementById('statusbar');
-      statusbarElement.innerHTML = `Character ${ch} copied to clipboard.`;
+    row.onclick = () => {
+      ucdController.sendToClipboard(ch);
     }
   }, // addRow
 
@@ -99,11 +77,12 @@ const viewController = {
         viewController.addRow(tab, ch, na);
         ++count;
       } catch(err) {
+        console.log(`Error in update: ${err}`);
       }
     }
     viewController.clear();
     resultElement.appendChild(tab);
-    statusbarElement.innerHTML = `Found ${count} results.`;
+    statusbarElement.innerHTML = `Found ${count} results.`
   }, // update
   
   searchHandler: () => {
@@ -111,23 +90,26 @@ const viewController = {
     const queryElement = document.getElementById('query');
     const statusbarElement = document.getElementById('statusbar');
     const resultElement = document.getElementById("result");
-    const query = queryElement.value;
+
+    const query = queryElement.value.trim();
     if (query.length >= 2) {
       statusbarElement.innerHTML = 'Searching...';
       viewController.setBusy();
-      ucdController.send(query);
+      ucdController.sendQuery({query});
     } else {
       statusbarElement.innerHTML = 'Results cleared.';
     }
     return false;
   }, // searchHandler
-} // viewController
+}; // viewController
 
 onload = () => {
   const queryElement = document.getElementById("query");
-  queryElement.onkeyup = (e) => { if (e.key == "Enter") { viewController.searchHandler() } }
+  queryElement.onkeyup = (e) => {
+    if (e.key == "Enter") { viewController.searchHandler(); }
+  };
   queryElement.focus();
-}
+};
 
 onkeydown = (event) => {
   const queryElement = document.getElementById("query");
@@ -136,3 +118,16 @@ onkeydown = (event) => {
     queryElement.value = "";
   }
 };
+
+window.api.send("requestStatus", {});
+
+window.api.receive("status", (data) => {
+    const {ready, message} = data;
+    console.log(`Got message ${message}`);
+    ucdController.receiveStatus(data);
+  });
+
+window.api.receive("searchResult", (data) => {
+    console.log(`Got searchResult ${data}`);
+    ucdController.receiveSearchResult(data);
+  });
