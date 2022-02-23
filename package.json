@@ -1,6 +1,6 @@
 {
   "name": "unicode-widget",
-  "version": "0.1.10",
+  "version": "0.2.1",
   "description": "Unicode Widget",
   "main": "main.js",
   "type": "commonjs",
